@@ -14,7 +14,10 @@ Utilizamos o MQTT para o desenvolvimento de uma aplicação mobile que recebe da
 - Apresenta botão que alterna o estado do led (ligado/desligado) (assinante do tópico /botão)
 
 ## ✔ Tecnologias Utilizadas
-``Android`` ``Java`` ``MQTT`` ``ESP32``
+- ``Android``
+- ``Java``
+- ``MQTT``
+- ``ESP32``
 
 ## 📁 Acesso ao projeto
 Você pode acessar os arquivos do projeto clicando [aqui](https://github.com/anacamilly/MQTT_App).
