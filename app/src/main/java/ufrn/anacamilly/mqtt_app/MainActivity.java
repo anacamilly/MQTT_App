@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private MqttClient client;
     private boolean isLightOn = false;
     private double temperature = 0.0;
-    private double luminosity = 0.0;
+    private double umidade = 0.0;
+    private int ldr = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +62,25 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     // Trata mensagens recebidas nos tópicos "temperature_topic" e "luminosity_topic"
-                    if (topic.equals("temperature_topic")) {
+                    if (topic.equals("sensor/temperatura")) {
                         temperature = Double.parseDouble(message.toString());
-                    } else if (topic.equals("luminosity_topic")) {
-                        luminosity = Double.parseDouble(message.toString());
+                    } else if (topic.equals("sensor/umidade")) {
+                        umidade = Double.parseDouble(message.toString());
+                    } else if (topic.equals("sensor/LDR")) {
+                        ldr = Integer.parseInt(message.toString());
                     }
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Atualiza as TextViews com os valores recebidos
-                            TextView temperatureTextView = findViewById(R.id.temperatureTextView);
-                            temperatureTextView.setText("Temperatura: " + temperature);
 
-                            TextView luminosityTextView = findViewById(R.id.luminosityTextView);
-                            luminosityTextView.setText("Luminosidade: " + luminosity);
-                        }
+                    runOnUiThread(() -> {
+                        // Atualiza as TextViews com os valores recebidos
+                        TextView temperatureTextView = findViewById(R.id.temperatureTextView);
+                        temperatureTextView.setText("Temperatura: " + temperature + "ºC");
+
+                        TextView umidadeTextView = findViewById(R.id.umidadeTextView);
+                        umidadeTextView.setText("Umidade: " + umidade + "%");
+
+                        TextView ldrTextView = findViewById(R.id.ldrTextView);
+                        ldrTextView.setText("Luminosidade: " + ldr);
                     });
                 }
 
@@ -90,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Conectado ao servidor MQTT", Toast.LENGTH_SHORT).show();
 
             // Subscreve nos tópicos "temperature_topic" e "luminosity_topic"
-            client.subscribe("temperature_topic", 1);
-            client.subscribe("luminosity_topic", 1);
+            client.subscribe("sensor/temperatura", 1);
+            client.subscribe("sensor/umidade", 1);
+            client.subscribe("sensor/LDR", 1);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         message.setQos(1);
 
         try {
-            client.publish("LED", message);
+            client.publish("topico_liga_desliga_led", message);
         } catch (MqttException e) {
             e.printStackTrace();
         }

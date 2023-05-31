@@ -18,12 +18,18 @@
         android:id="@+id/temperatureTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Temperatura: 0" />
+        android:text="" />
 
     <TextView
-        android:id="@+id/luminosityTextView"
+        android:id="@+id/umidadeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Luminosidade: 0" />
+        android:text="" />
+
+    <TextView
+        android:id="@+id/ldrTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
 
 </LinearLayout>
